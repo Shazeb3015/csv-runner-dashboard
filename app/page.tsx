@@ -4,9 +4,11 @@ import { useState } from "react"
 import { CsvUploader } from "@/components/csv-uploader"
 import { MetricsCards } from "@/components/metrics-cards"
 import { ChartsSection } from "@/components/charts-section"
+import { DataTable } from "@/components/data-table"
+import { ExportMenu } from "@/components/export-menu"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { RunData } from "@/lib/types"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, Table2 } from "lucide-react"
 
 export default function Home() {
   const [data, setData] = useState<RunData[] | null>(null)
@@ -54,19 +56,30 @@ export default function Home() {
                 <h2 className="text-2xl font-bold text-gray-800">
                   Results for <span className="text-green-600">{fileName}</span>
                 </h2>
-                <button
-                  onClick={() => {
-                    setData(null)
-                    setFileName(null)
-                  }}
-                  className="text-sm text-gray-500 hover:text-gray-700 underline"
-                >
-                  Clear Data
-                </button>
+                <div className="flex gap-3">
+                  <ExportMenu data={data} filename={fileName || "running-data"} />
+                  <button
+                    onClick={() => {
+                      setData(null)
+                      setFileName(null)
+                    }}
+                    className="text-sm text-gray-500 hover:text-gray-700 underline"
+                  >
+                    Clear Data
+                  </button>
+                </div>
               </div>
 
               <MetricsCards data={data} />
               <ChartsSection data={data} />
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Table2 className="h-5 w-5 text-green-600" />
+                  <h3 className="text-lg font-semibold text-gray-700">Data Table</h3>
+                </div>
+                <DataTable data={data} />
+              </div>
             </div>
           )}
         </div>
